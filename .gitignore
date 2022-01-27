@@ -1,0 +1,8 @@
+.local
+.terraform
+.terraform-plan*
+.terraform.lock.hcl
+terraform.tfsta*
+
+settings/openvpn*
+key-pair/*.pem
