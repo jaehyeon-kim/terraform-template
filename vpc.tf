@@ -14,19 +14,3 @@ module "vpc" {
   single_nat_gateway = false
   one_nat_gateway_per_az = false
 }
-
-resource "tls_private_key" "pk" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "key_pair" {
-  key_name   = "${local.resource_prefix}-key"
-  public_key = tls_private_key.pk.public_key_openssh
-}
-
-resource "local_file" "pem_file" {
-  filename = pathexpand("${path.module}/key-pair/${local.resource_prefix}-key.pem")
-  file_permission = "0400"
-  sensitive_content = tls_private_key.pk.private_key_pem
-}

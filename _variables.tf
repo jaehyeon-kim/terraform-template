@@ -3,6 +3,11 @@ variable "class_b" {
   default     = "100"
 }
 
+variable "key_pair_create" {
+  description = "Whether to create a key pair"
+  default = true
+}
+
 variable "vpn_create" {
   description = "Whether to create a VPN instance"
   default = true
