@@ -39,6 +39,7 @@ locals {
   owner             = "jaehyeon"
   aws_region        = data.aws_region.current.name
   resource_prefix   = "analytics"
+  database_name     = "analytics"
   environment       = "dev"
   local_ip_address  = "${chomp(data.http.local_ip_address.body)}/32"
   vpn_ingress_cidr  = var.vpn_limit_ingress ? local.local_ip_address : "0.0.0.0/0"

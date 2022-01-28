@@ -54,3 +54,44 @@ output "vpn_autoscaling_group_name" {
     for k, v in module.vpn : k => v.autoscaling_group_name
   }
 }
+
+# RDS
+output "cluster_arn" {
+  description = "Amazon Resource Name (ARN) of cluster"
+  value       = module.rds.cluster_arn
+}
+
+output "db_subnet_group_name" {
+  description = "The db subnet group name"
+  value       = module.rds.db_subnet_group_name
+}
+
+output "cluster_endpoint" {
+  description = "Writer endpoint for the cluster"
+  value       = module.rds.cluster_endpoint
+}
+
+output "cluster_engine_version_actual" {
+  description = "The running version of the cluster database"
+  value       = module.rds.cluster_engine_version_actual
+}
+
+output "cluster_database_name" {
+  description = "Name for an automatically created database on cluster creation"
+  value       = module.rds.cluster_database_name
+}
+
+output "cluster_instances" {
+  description = "A map of cluster instances and their attributes"
+  value       = module.rds.cluster_instances
+}
+
+output "cluster_security_group_id" {
+  description = "The security group ID of the cluster"
+  value       = module.rds.security_group_id
+}
+
+output "cluster_additional_security_group_id" {
+  description = "An additional security group id for VPN access"
+  value       = aws_security_group.rds_additional.id
+}
