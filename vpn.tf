@@ -32,7 +32,7 @@ module "vpn" {
             vpn_psk = var.vpn_psk,
             vpn_username = var.vpn_username,
             vpn_password = var.vpn_password,
-            vpn_admin_password = var.vpn_admin_password
+            vpn_admin_password = var.admin_password
           }),
           permissions : "0755",
         }

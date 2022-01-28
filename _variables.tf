@@ -29,8 +29,8 @@ variable "vpn_psk" {
   sensitive   = true
 }
 
-variable "vpn_admin_password" {
-  description = "SoftEther VPN admin password"
+variable "admin_password" {
+  description = "SoftEther VPN admin / database master password"
   type        = string
   sensitive   = true
 }
@@ -40,7 +40,6 @@ locals {
   aws_region        = data.aws_region.current.name
   resource_prefix   = "analytics"
   environment       = "dev"
-  vpc_cidr          = "10.${var.class_b}.0.0/16"
   local_ip_address  = "${chomp(data.http.local_ip_address.body)}/32"
   vpn_ingress_cidr  = var.vpn_limit_ingress ? local.local_ip_address : "0.0.0.0/0"
   vpn_spot_override = [
