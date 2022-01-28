@@ -27,7 +27,7 @@ module "vpn" {
         {
           path : "/opt/vpn/bootstrap.sh",
           content : templatefile("${path.module}/scripts/bootstrap.sh", { 
-            aws_region = local.aws_region,
+            aws_region = var.aws_region,
             allocation_id = aws_eip.vpn[0].allocation_id,
             vpn_psk = var.vpn_psk,
             vpn_username = var.vpn_username,
@@ -55,20 +55,20 @@ module "vpn" {
   }
 
   tags_as_map = {
-    "Name" = "${local.local.resource_prefix}-vpn-asg"
+    "Name" = "${local.resource_prefix}-vpn-asg"
   }
 }
 
 resource "aws_eip" "vpn" {
   count = var.vpn_create ? 1 : 0
   tags  = {
-    "Name" = "${local.local.resource_prefix}-vpn-eip"
+    "Name" = "${local.resource_prefix}-vpn-eip"
   }
 }
 
 resource "aws_security_group" "vpn" {
   count       = var.vpn_create ? 1 : 0
-  name        = "${local.local.resource_prefix}-vpn-sg"
+  name        = "${local.resource_prefix}-vpn-sg"
   description = "Allow inbound traffic for SoftEther VPN"
   vpc_id      = module.vpc.vpc_id
 
@@ -129,23 +129,23 @@ resource "aws_security_group" "vpn" {
   }
 
   tags = {
-    Name = "${local.local.resource_prefix}-vpn-sg"
+    Name = "${local.resource_prefix}-vpn-sg"
   }
 }
 
 resource "aws_iam_instance_profile" "vpn" {
   count = var.vpn_create ? 1 : 0
-  name  = "${local.local.resource_prefix}-vpn-instance-profile"
+  name  = "${local.resource_prefix}-vpn-instance-profile"
   role  = aws_iam_role.vpn[0].name
 
   tags = {
-    "Name" = "${local.local.resource_prefix}-vpn-instance-profile"
+    "Name" = "${local.resource_prefix}-vpn-instance-profile"
   }
 }
 
 resource "aws_iam_role" "vpn" {
   count = var.vpn_create ? 1 : 0
-  name  = "${local.local.resource_prefix}-vpn-role"
+  name  = "${local.resource_prefix}-vpn-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -161,7 +161,7 @@ resource "aws_iam_role" "vpn" {
   })
 
   inline_policy {
-    name = "${local.local.resource_prefix}-vpn-policy"
+    name = "${local.resource_prefix}-vpn-policy"
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
@@ -178,6 +178,6 @@ resource "aws_iam_role" "vpn" {
   }
 
   tags = {
-    "Name" = "${local.local.resource_prefix}-vpn-role"
+    "Name" = "${local.resource_prefix}-vpn-role"
   }
 }

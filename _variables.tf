@@ -1,3 +1,7 @@
+variable "aws_region" {
+  default = "ap-southeast-2"
+}
+
 variable "class_b" {
   description = "Class B of VPC (10.XXX.0.0/16)"
   default     = "100"
@@ -37,7 +41,6 @@ variable "admin_password" {
 
 locals {
   owner             = "jaehyeon"
-  aws_region        = data.aws_region.current.name
   resource_prefix   = "analytics"
   database_name     = "analytics"
   environment       = "dev"
