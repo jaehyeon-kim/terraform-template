@@ -1,4 +1,4 @@
-module "rds" {
+module "aurora" {
   source  = "terraform-aws-modules/rds-aurora/aws"
 
   name                        = "${local.resource_prefix}-db-cluster"
@@ -13,10 +13,10 @@ module "rds" {
   }
 
   vpc_id                 = module.vpc.vpc_id
-  db_subnet_group_name   = aws_db_subnet_group.rds.id
+  db_subnet_group_name   = aws_db_subnet_group.aurora.id
   create_db_subnet_group = false
   create_security_group  = true
-  vpc_security_group_ids = [aws_security_group.rds_additional.id]
+  vpc_security_group_ids = [aws_security_group.aurora_additional.id]
 
   iam_database_authentication_enabled = false
   create_random_password              = false
@@ -26,7 +26,7 @@ module "rds" {
   apply_immediately   = true
   skip_final_snapshot = true
 
-  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.rds.id
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora.id
   enabled_cloudwatch_logs_exports = ["postgresql"]
 
   tags = {
@@ -34,7 +34,7 @@ module "rds" {
   }
 }
 
-resource "aws_db_subnet_group" "rds" {
+resource "aws_db_subnet_group" "aurora" {
   name       = "${local.resource_prefix}-db-subnet-group"
   subnet_ids = module.vpc.private_subnets
 
@@ -43,7 +43,7 @@ resource "aws_db_subnet_group" "rds" {
   }
 }
 
-resource "aws_rds_cluster_parameter_group" "rds" {
+resource "aws_rds_cluster_parameter_group" "aurora" {
   name        = "${local.resource_prefix}-aurora-postgres13-cluster-parameter-group"
   family      = "aurora-postgresql13"
 
@@ -58,7 +58,7 @@ resource "aws_rds_cluster_parameter_group" "rds" {
   }
 }
 
-resource "aws_security_group" "rds_additional" {
+resource "aws_security_group" "aurora_additional" {
   name   = "${local.resource_prefix}-db-security-group"
   vpc_id = module.vpc.vpc_id
 
@@ -67,11 +67,11 @@ resource "aws_security_group" "rds_additional" {
   }
 }
 
-resource "aws_security_group_rule" "rds_vpn_inbound" {
+resource "aws_security_group_rule" "aurora_vpn_inbound" {
   count                    = var.vpn_create ? 1 : 0
   type                     = "ingress"
   description              = "VPN access"
-  security_group_id        = aws_security_group.rds_additional.id
+  security_group_id        = aws_security_group.aurora_additional.id
   protocol                 = "tcp"
   from_port                = "5432"
   to_port                  = "5432"
