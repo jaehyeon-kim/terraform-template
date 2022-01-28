@@ -4,7 +4,7 @@ module "vpn" {
 
   name = "${local.resource_prefix}-vpn-asg"
 
-  key_name            = var.key_pair_create ? aws_key_pair.key_pair.key_name : null
+  key_name            = var.key_pair_create ? aws_key_pair.key_pair[0].key_name : null
   vpc_zone_identifier = module.vpc.public_subnets
   min_size            = 1
   max_size            = 1
@@ -27,10 +27,10 @@ module "vpn" {
         {
           path : "/opt/vpn/bootstrap.sh",
           content : templatefile("${path.module}/scripts/bootstrap.sh", { 
-            aws_region = var.aws_region,
-            allocation_id = aws_eip.vpn[0].allocation_id,
-            vpn_psk = var.vpn_psk,
-            admin_password = var.admin_password
+            aws_region      = var.aws_region,
+            allocation_id   = aws_eip.vpn[0].allocation_id,
+            vpn_psk         = var.vpn_psk,
+            admin_password  = var.admin_password
           }),
           permissions : "0755",
         }
