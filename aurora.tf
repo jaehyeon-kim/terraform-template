@@ -49,10 +49,15 @@ resource "aws_rds_cluster_parameter_group" "aurora" {
 
   # for Debezium pgoutput plugin
   parameter {
-    name    = "rds.logical_replication"
-    value   = "1"
+    name          = "rds.logical_replication"
+    value         = "1"
+    apply_method  = "pending-reboot"
   }
-  
+
+  lifecycle {
+    create_before_destroy = true
+  } 
+
   tags = {
     Name = "${local.resource_prefix}-aurora-postgres13-cluster-parameter-group"
   }
@@ -75,5 +80,5 @@ resource "aws_security_group_rule" "aurora_vpn_inbound" {
   protocol                 = "tcp"
   from_port                = "5432"
   to_port                  = "5432"
-  source_security_group_id = data.aws_security_group.vpn[0].id
+  source_security_group_id = aws_security_group.vpn[0].id
 }
