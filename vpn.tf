@@ -4,7 +4,7 @@ module "vpn" {
 
   name = "${local.resource_prefix}-vpn-asg"
 
-  key_name            = aws_key_pair.key_pair.key_name
+  key_name            = var.key_pair_create ? aws_key_pair.key_pair.key_name : null
   vpc_zone_identifier = module.vpc.public_subnets
   min_size            = 1
   max_size            = 1
