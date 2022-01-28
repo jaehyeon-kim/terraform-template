@@ -17,6 +17,6 @@ docker run -d \
   --restart unless-stopped \
   -p 500:500/udp -p 4500:4500/udp -p 1701:1701/tcp -p 1194:1194/udp -p 5555:5555/tcp -p 443:443/tcp \
   -e PSK=${vpn_psk} \
-  -e SPW=${vpn_admin_password} \
+  -e SPW=${admin_password} \
   -e HPW=DEFAULT \
   siomiz/softethervpn:debian
