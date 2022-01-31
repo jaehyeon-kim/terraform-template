@@ -91,7 +91,7 @@ output "cluster_security_group_id" {
   value       = module.aurora.security_group_id
 }
 
-output "cluster_additional_security_group_id" {
-  description = "An additional security group id for VPN access"
-  value       = aws_security_group.aurora_additional.id
+output "cluster_vpn_access_security_group_id" {
+  description = "An security group id for VPN access"
+  value       = aws_security_group.vpn_access.id
 }
