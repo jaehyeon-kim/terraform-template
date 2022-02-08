@@ -39,6 +39,11 @@ variable "admin_password" {
   sensitive   = true
 }
 
+variable "aurora_create" {
+  description = "Whether to create a Aurora cluster"
+  default = true
+}
+
 locals {
   owner             = "jaehyeon"
   resource_prefix   = "analytics"
