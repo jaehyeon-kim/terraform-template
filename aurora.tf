@@ -17,7 +17,7 @@ module "aurora" {
   db_subnet_group_name   = var.aurora_create ? aws_db_subnet_group.aurora[0].id : ""
   create_db_subnet_group = false
   create_security_group  = true
-  vpc_security_group_ids = (var.aurora_create && var.vpn_create) ? [aws_security_group.vpn_access[0].id] : []
+  vpc_security_group_ids = compact([join("", aws_security_group.vpn_access.*.id)])
 
   iam_database_authentication_enabled = false
   create_random_password              = false
